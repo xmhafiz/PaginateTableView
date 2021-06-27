@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     
     // 4
     private func fetchData(completed: ((Bool) -> Void)? = nil) {
-        GithubAPIManager.shared.getUsers { [weak self] result in
+        GithubAPIManager.shared.getUsers(perPage: pageLimit, sinceId: currentLastId) { [weak self] result in
             switch result {
             case .success(let users):
                 self?.users.append(contentsOf: users)
@@ -73,7 +73,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         case .userList:
             return users.count
         case .loader:
-            return users.count < pageLimit ? 0 : 1
+            return users.count >= pageLimit ? 1 : 0
         }
     }
     
